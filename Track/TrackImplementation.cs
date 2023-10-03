@@ -59,7 +59,7 @@ public class TrackImplementation
                 Log.Error("Failed to update ContentManager configuration.");
 
         // Restart Server
-
-        // TODO
+        var restartFile = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
+        File.Create(restartFile);
     }
 }
