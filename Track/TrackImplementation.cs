@@ -15,15 +15,12 @@ public class TrackImplementation
 {
     private readonly ContentManagerImplementation _contentManagerImplementation;
     private readonly ACServerConfiguration _acServerConfiguration;
-    private readonly ACServer _server;
 
     public TrackImplementation(ContentManagerImplementation contentManagerImplementation,
-        ACServerConfiguration acServerConfiguration,
-        ACServer server)
+        ACServerConfiguration acServerConfiguration)
     {
         _contentManagerImplementation = contentManagerImplementation;
         _acServerConfiguration = acServerConfiguration;
-        _server = server;
     }
 
     public void ChangeTrack(TrackData track)
@@ -59,7 +56,8 @@ public class TrackImplementation
                 Log.Error("Failed to update ContentManager configuration.");
 
         // Restart Server
-        var restartFile = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
-        File.Create(restartFile);
+        var restartPath = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
+        var restartFile = File.Create(restartPath);
+        restartFile.Close();
     }
 }

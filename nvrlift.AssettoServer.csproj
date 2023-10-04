@@ -6,6 +6,7 @@
         <SelfContained>false</SelfContained>
         <DebugType>embedded</DebugType>
         <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+        <AssemblyName>NVRLIFTBasePlugin</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
