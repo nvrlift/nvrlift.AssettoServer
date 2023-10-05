@@ -9,12 +9,13 @@ namespace nvrlift.AssettoServer;
 
 public class NvrliftBaseModule : AssettoServerModule<NvrliftBaseConfiguration> //Module
 {
+    /*
     private readonly NvrliftBaseConfiguration _configuration;
 
     public NvrliftBaseModule(NvrliftBaseConfiguration configuration)
     {
         _configuration = configuration;
-    }
+    } */
     
     protected override void Load(ContainerBuilder builder)
     {
