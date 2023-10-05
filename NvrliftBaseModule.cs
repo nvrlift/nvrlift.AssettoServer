@@ -7,7 +7,7 @@ using VotingTrackPlugin;
 
 namespace nvrlift.AssettoServer;
 
-public class NvrliftBaseModule : Module
+public class NvrliftBaseModule : AssettoServerModule<NvrliftBaseConfiguration> //Module
 {
     private readonly NvrliftBaseConfiguration _configuration;
 

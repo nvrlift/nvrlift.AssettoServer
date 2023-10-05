@@ -24,4 +24,5 @@ The default value for every config property is `false`
 !NvrliftBaseConfiguration
 ContentManager: true
 Track: true
+Restart: WindowsFile # yet to implement ->Docker
 ```
