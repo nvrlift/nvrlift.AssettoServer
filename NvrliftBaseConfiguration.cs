@@ -11,5 +11,12 @@ public class NvrliftBaseConfiguration : IValidateConfiguration<NvrliftBaseConfig
     
     public bool ContentManager { get; init; } = false;
     public bool Track { get; init; } = false;
+    public RestartType Restart { get; init; } = RestartType.Disabled;
+}
 
+public enum RestartType
+{
+    Disabled,
+    WindowsFile,
+    Docker
 }

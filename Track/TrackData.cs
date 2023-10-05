@@ -2,12 +2,12 @@
 
 public class TrackData
 {
-    public TrackBaseType? Type { get; set; }
-    public TrackBaseType? UpcomingType { get; set; }
+    public ITrackBaseType? Type { get; set; }
+    public ITrackBaseType? UpcomingType { get; set; }
     public double TransitionDuration { get; set; }
     public bool UpdateContentManager { get; set; }
     public bool IsInit { get; set; }
-    public TrackData(TrackBaseType? type, TrackBaseType? upcomingType)
+    public TrackData(ITrackBaseType? type, ITrackBaseType? upcomingType)
     {
         Type = type;
         UpcomingType = upcomingType;

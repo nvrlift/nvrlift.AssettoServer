@@ -6,6 +6,7 @@ using AssettoServer.Utils;
 using IniParser;
 using IniParser.Model;
 using nvrlift.AssettoServer.ContentManager;
+using nvrlift.AssettoServer.Restart;
 using Qommon;
 using Serilog;
 
@@ -15,12 +16,15 @@ public class TrackImplementation
 {
     private readonly ContentManagerImplementation _contentManagerImplementation;
     private readonly ACServerConfiguration _acServerConfiguration;
+    private readonly IRestartImplementation _restartImplementation;
 
     public TrackImplementation(ContentManagerImplementation contentManagerImplementation,
+        IRestartImplementation restartImplementation,
         ACServerConfiguration acServerConfiguration)
     {
         _contentManagerImplementation = contentManagerImplementation;
         _acServerConfiguration = acServerConfiguration;
+        _restartImplementation = restartImplementation;
     }
 
     public void ChangeTrack(TrackData track)
@@ -56,8 +60,6 @@ public class TrackImplementation
                 Log.Error("Failed to update ContentManager configuration.");
 
         // Restart Server
-        var restartPath = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
-        var restartFile = File.Create(restartPath);
-        restartFile.Close();
+        _restartImplementation.InitiateRestart();
     }
 }
