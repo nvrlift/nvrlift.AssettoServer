@@ -37,7 +37,7 @@ public class TrackManager : CriticalBackgroundService
         {
             try
             {
-                if (CurrentTrack.UpcomingType == null || CurrentTrack.Type == CurrentTrack.UpcomingType)
+                if (CurrentTrack.UpcomingType == null || CurrentTrack.Type.Equals(CurrentTrack.UpcomingType))
                 {
                     await Task.Delay(10000, stoppingToken);
                 }
