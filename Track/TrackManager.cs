@@ -13,31 +13,32 @@ public class TrackManager : CriticalBackgroundService
     private readonly TrackImplementation _trackImplementation;
 
     public TrackManager(TrackImplementation trackImplementation,
-        ACServerConfiguration configuration, 
-        SessionManager timeSource, 
+        ACServerConfiguration configuration,
+        SessionManager timeSource,
         IHostApplicationLifetime applicationLifetime) : base(applicationLifetime)
     {
         _trackImplementation = trackImplementation;
         _configuration = configuration;
         _timeSource = timeSource;
     }
+
     public TrackData CurrentTrack { get; private set; } = null!;
-    
+
     public void SetTrack(TrackData track)
     {
         CurrentTrack = track;
-        
+
         // Seems unnecessary to call this here, the async service picks it up anyway.
         // _trackImplementation.ChangeTrack(CurrentTrack);
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
-                if (CurrentTrack.UpcomingType == null || CurrentTrack.Type.Equals(CurrentTrack.UpcomingType))
+                if (CurrentTrack.UpcomingType == null || CurrentTrack.Type!.Equals(CurrentTrack.UpcomingType))
                 {
                     await Task.Delay(10000, stoppingToken);
                 }

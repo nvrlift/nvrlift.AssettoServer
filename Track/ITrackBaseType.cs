@@ -9,7 +9,7 @@ public interface ITrackBaseType
     public string TrackLayoutConfig { get; set; }
     public string CMLink { get; set; }
     public string CMVersion { get; set; }
-    
+
     public bool Equals(ITrackBaseType compare)
     {
         if (TrackFolder == compare.TrackFolder

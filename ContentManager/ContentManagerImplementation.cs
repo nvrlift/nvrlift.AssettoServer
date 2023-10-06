@@ -1,4 +1,3 @@
-
 using AssettoServer.Server.Configuration;
 using AssettoServer.Shared.Network.Http.Responses;
 using Newtonsoft.Json;
@@ -20,11 +19,11 @@ public class ContentManagerImplementation
     {
         if (track.UpcomingType == null)
             return false;
-        
+
         var newContentManagerConfig = _acServerConfiguration.ContentConfiguration;
         if (_acServerConfiguration.ContentConfiguration == null)
             Log.Error("ContentManager configuration not found.");
-            
+
         _acServerConfiguration.ContentConfiguration.Track = new CMContentEntryVersionized()
         {
             Url = track.Type.CMLink,
@@ -37,7 +36,7 @@ public class ContentManagerImplementation
             Log.Error("ContentManager configuration file not found.");
 
             var output = JsonConvert.SerializeObject(newContentManagerConfig, Formatting.Indented);
-            
+
             File.WriteAllText(cmContentPath, output);
         }
 

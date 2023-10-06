@@ -29,7 +29,6 @@ public class TrackImplementation
 
     public void ChangeTrack(TrackData track)
     {
-        
         var iniPath = Path.Join(_acServerConfiguration.BaseFolder, "server_cfg.ini");
         if (File.Exists(iniPath))
         {
@@ -37,13 +36,13 @@ public class TrackImplementation
 
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(iniPath);
-            
+
             // I am replicating ACServerConfiguration.Server
             // [IniField("SERVER", "TRACK")] public string Track { get; init; } = "";
             // [IniField("SERVER", "CONFIG_TRACK")] public string TrackConfig { get; init; } = "";
             data["SERVER"]["TRACK"] = track.UpcomingType.TrackFolder;
             data["SERVER"]["CONFIG_TRACK"] = track.UpcomingType.TrackLayoutConfig;
-            
+
             parser.WriteFile(iniPath, data);
         }
         else
@@ -54,7 +53,7 @@ public class TrackImplementation
 
         // Content Manager Changes
         if (track.UpdateContentManager)
-            if(_contentManagerImplementation.UpdateTrackConfig(track))
+            if (_contentManagerImplementation.UpdateTrackConfig(track))
                 Log.Information("ContentManager configuration updated.");
             else
                 Log.Error("Failed to update ContentManager configuration.");

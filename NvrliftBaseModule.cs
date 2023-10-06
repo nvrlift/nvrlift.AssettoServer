@@ -16,7 +16,7 @@ public class NvrliftBaseModule : AssettoServerModule<NvrliftBaseConfiguration> /
     {
         _configuration = configuration;
     } */
-    
+
     protected override void Load(ContainerBuilder builder)
     {
         /*
@@ -26,7 +26,7 @@ public class NvrliftBaseModule : AssettoServerModule<NvrliftBaseConfiguration> /
         else if (_configuration.Restart == RestartType.Docker)
             builder.RegisterType<DockerRestartImplementation>().As<IRestartImplementation>().SingleInstance();
             */
-        
+
         builder.RegisterType<WindowsFileRestartImplementation>().As<IRestartImplementation>().SingleInstance();
 
         builder.RegisterType<TrackImplementation>().AsSelf().SingleInstance();

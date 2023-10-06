@@ -10,6 +10,7 @@ public class WindowsFileRestartImplementation : IRestartImplementation
     {
         _acServerConfiguration = acServerConfiguration;
     }
+
     public void InitiateRestart()
     {
         var restartPath = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
