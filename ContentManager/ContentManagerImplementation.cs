@@ -15,19 +15,19 @@ public class ContentManagerImplementation
         _acServerConfiguration = acServerConfiguration;
     }
 
-    public bool UpdateTrackConfig(TrackData track)
+    public bool UpdateTrackConfig(ITrackBaseType? track)
     {
-        if (track.UpcomingType == null)
+        if (track == null)
             return false;
 
         var newContentManagerConfig = _acServerConfiguration.ContentConfiguration;
         if (_acServerConfiguration.ContentConfiguration == null)
             Log.Error("ContentManager configuration not found.");
 
-        _acServerConfiguration.ContentConfiguration.Track = new CMContentEntryVersionized()
+        _acServerConfiguration.ContentConfiguration!.Track = new CMContentEntryVersionized()
         {
-            Url = track.Type.CMLink,
-            Version = track.Type.CMVersion
+            Url = track.CMLink,
+            Version = track.CMVersion
         };
 
         string cmContentPath = Path.Join(_acServerConfiguration.BaseFolder, "cm_content/content.json");

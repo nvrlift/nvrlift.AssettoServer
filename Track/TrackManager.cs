@@ -28,8 +28,8 @@ public class TrackManager : CriticalBackgroundService
     {
         CurrentTrack = track;
 
-        // Seems unnecessary to call this here, the async service picks it up anyway.
-        // _trackImplementation.ChangeTrack(CurrentTrack);
+        if (!CurrentTrack.IsInit)
+            UpdateTrack();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -38,17 +38,7 @@ public class TrackManager : CriticalBackgroundService
         {
             try
             {
-                if (CurrentTrack.UpcomingType == null || CurrentTrack.Type!.Equals(CurrentTrack.UpcomingType))
-                {
-                    await Task.Delay(10000, stoppingToken);
-                }
-                else
-                {
-                    _trackImplementation.ChangeTrack(CurrentTrack);
-
-                    CurrentTrack.Type = CurrentTrack.UpcomingType;
-                    CurrentTrack.UpcomingType = null;
-                }
+                UpdateTrack();
             }
             catch (Exception ex)
             {
@@ -58,6 +48,18 @@ public class TrackManager : CriticalBackgroundService
             {
                 await Task.Delay(1000, stoppingToken);
             }
+        }
+    }
+
+    private void UpdateTrack()
+    {
+        if (CurrentTrack.UpcomingType != null || !CurrentTrack.Type!.Equals(CurrentTrack.UpcomingType!))
+        {
+            Log.Information($"Track change to '{CurrentTrack.UpcomingType!.Name}' initiated");
+            _trackImplementation.ChangeTrack(CurrentTrack);
+
+            CurrentTrack.Type = CurrentTrack.UpcomingType;
+            CurrentTrack.UpcomingType = null;
         }
     }
 }

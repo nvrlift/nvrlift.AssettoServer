@@ -5,7 +5,7 @@ public class TrackData
     public ITrackBaseType? Type { get; set; }
     public ITrackBaseType? UpcomingType { get; set; }
     public double TransitionDuration { get; set; }
-    public bool UpdateContentManager { get; set; }
+    public bool ContentManager { get; set; }
     public bool IsInit { get; set; }
 
     public TrackData(ITrackBaseType? type, ITrackBaseType? upcomingType)

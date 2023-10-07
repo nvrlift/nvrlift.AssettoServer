@@ -32,7 +32,7 @@ public class TrackImplementation
         var iniPath = Path.Join(_acServerConfiguration.BaseFolder, "server_cfg.ini");
         if (File.Exists(iniPath))
         {
-            Log.Error("'server_cfg.ini' not found, track change starting...");
+            Log.Information("'server_cfg.ini' found, track change starting...");
 
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(iniPath);
@@ -40,9 +40,10 @@ public class TrackImplementation
             // I am replicating ACServerConfiguration.Server
             // [IniField("SERVER", "TRACK")] public string Track { get; init; } = "";
             // [IniField("SERVER", "CONFIG_TRACK")] public string TrackConfig { get; init; } = "";
-            data["SERVER"]["TRACK"] = track.UpcomingType.TrackFolder;
-            data["SERVER"]["CONFIG_TRACK"] = track.UpcomingType.TrackLayoutConfig;
+            data["SERVER"]["TRACK"] = track.UpcomingType!.TrackFolder;
+            data["SERVER"]["CONFIG_TRACK"] = track.UpcomingType!.TrackLayoutConfig;
 
+            Log.Information($"Writing track change to server_cfg.ini");
             parser.WriteFile(iniPath, data);
         }
         else
@@ -52,8 +53,8 @@ public class TrackImplementation
         }
 
         // Content Manager Changes
-        if (track.UpdateContentManager)
-            if (_contentManagerImplementation.UpdateTrackConfig(track))
+        if (track.ContentManager)
+            if (_contentManagerImplementation.UpdateTrackConfig(track.UpcomingType))
                 Log.Information("ContentManager configuration updated.");
             else
                 Log.Error("Failed to update ContentManager configuration.");

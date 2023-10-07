@@ -1,4 +1,5 @@
 using AssettoServer.Server.Configuration;
+using Serilog;
 
 namespace nvrlift.AssettoServer.Restart;
 
@@ -13,7 +14,9 @@ public class WindowsFileRestartImplementation : IRestartImplementation
 
     public void InitiateRestart()
     {
-        var restartPath = Path.Join(_acServerConfiguration.BaseFolder, $"{Environment.ProcessId}.asrestart");
+        
+        var restartPath = Path.Join(_acServerConfiguration.BaseFolder, "restart", $"{Environment.ProcessId}.asrestart");
+        Log.Information($"Trying to create restart file: {restartPath}");
         var restartFile = File.Create(restartPath);
         restartFile.Close();
     }
