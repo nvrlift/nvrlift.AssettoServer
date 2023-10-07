@@ -1,13 +1,8 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using AssettoServer.Server;
-using AssettoServer.Server.Configuration;
-using AssettoServer.Utils;
+﻿using AssettoServer.Server.Configuration;
 using IniParser;
 using IniParser.Model;
 using nvrlift.AssettoServer.ContentManager;
 using nvrlift.AssettoServer.Restart;
-using Qommon;
 using Serilog;
 
 namespace nvrlift.AssettoServer.Track;
@@ -59,6 +54,9 @@ public class TrackImplementation
             else
                 Log.Error("Failed to update ContentManager configuration.");
 
+        // Notify about restart
+        Log.Information($"Restarting server");
+        
         // Restart Server
         _restartImplementation.InitiateRestart();
     }
