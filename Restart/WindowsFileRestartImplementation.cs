@@ -1,3 +1,4 @@
+using System.Text;
 using AssettoServer.Server;
 using AssettoServer.Server.Configuration;
 using AssettoServer.Shared.Network.Packets.Outgoing;
@@ -16,7 +17,7 @@ public class WindowsFileRestartImplementation : IRestartImplementation
         _entryCarManager = entryCarManager;
     }
 
-    public void InitiateRestart()
+    public void InitiateRestart(string preset)
     {
         //Kick clients
         Log.Information("Kicking all clients for restart.");
@@ -32,6 +33,8 @@ public class WindowsFileRestartImplementation : IRestartImplementation
         var restartPath = Path.Join(_acServerConfiguration.BaseFolder, "restart", $"{Environment.ProcessId}.asrestart");
         Log.Information($"Trying to create restart file: {restartPath}");
         var restartFile = File.Create(restartPath);
+        byte[] content = new UTF8Encoding(true).GetBytes(preset);
+        restartFile.Write(content, 0, content.Length);
         restartFile.Close();
     }
 }

@@ -8,8 +8,6 @@ namespace VotingTrackPlugin;
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
 public class NvrliftBaseConfiguration : IValidateConfiguration<NvrliftBaseConfigurationValidator>
 {
-    public bool ContentManager { get; init; } = false;
-    public bool Track { get; init; } = false;
     public RestartType Restart { get; init; } = RestartType.Disabled;
 }
 

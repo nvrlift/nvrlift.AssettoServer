@@ -11,7 +11,7 @@ public class DockerRestartImplementation : IRestartImplementation
         _acServerConfiguration = acServerConfiguration;
     }
 
-    public void InitiateRestart()
+    public void InitiateRestart(string preset)
     {
         throw new NotImplementedException();
     }
