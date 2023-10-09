@@ -24,7 +24,11 @@ public class ContentManagerImplementation
         if (_acServerConfiguration.ContentConfiguration == null)
             Log.Error("ContentManager configuration not found.");
 
-        _acServerConfiguration.ContentConfiguration!.Track = new CMContentEntryVersionized()
+        
+        _acServerConfiguration.ContentConfiguration!.Track = string.IsNullOrEmpty(track.CMVersion) ? new CMContentEntryVersionized
+        {
+            Url = track.CMLink
+        } : new CMContentEntryVersionized
         {
             Url = track.CMLink,
             Version = track.CMVersion

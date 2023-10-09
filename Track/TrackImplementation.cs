@@ -1,8 +1,9 @@
-﻿using AssettoServer.Server.Configuration;
+﻿using AssettoServer.Server;
+using AssettoServer.Server.Configuration;
 using IniParser;
 using IniParser.Model;
 using nvrlift.AssettoServer.ContentManager;
-using nvrlift.AssettoServer.Restart;
+using Polly;
 using Serilog;
 
 namespace nvrlift.AssettoServer.Track;
@@ -11,15 +12,19 @@ public class TrackImplementation
 {
     private readonly ContentManagerImplementation _contentManagerImplementation;
     private readonly ACServerConfiguration _acServerConfiguration;
-    private readonly IRestartImplementation _restartImplementation;
+    private readonly SessionManager _sessionManager;
+    private readonly EntryCarManager _entryCarManager;
+    private readonly ChecksumManager _checksumManager;
 
     public TrackImplementation(ContentManagerImplementation contentManagerImplementation,
-        IRestartImplementation restartImplementation,
-        ACServerConfiguration acServerConfiguration)
+        SessionManager sessionManager,
+        ACServerConfiguration acServerConfiguration, EntryCarManager entryCarManager, ChecksumManager checksumManager)
     {
         _contentManagerImplementation = contentManagerImplementation;
         _acServerConfiguration = acServerConfiguration;
-        _restartImplementation = restartImplementation;
+        _entryCarManager = entryCarManager;
+        _checksumManager = checksumManager;
+        _sessionManager = sessionManager;
     }
 
     public void ChangeTrack(TrackData track)
@@ -57,7 +62,17 @@ public class TrackImplementation
         // Notify about restart
         Log.Information($"Restarting server");
         
-        // Restart Server
-        _restartImplementation.InitiateRestart();
+        // Next Session
+        Log.Information("Reconnecting all clients track change.");
+        foreach (var client in _entryCarManager.EntryCars.Select(c => c.Client))
+        {
+            if (client != null)
+            {
+                client.Logger.Information("Reconnecting {ClientName}", client.Name);
+                client?.SendPacket(new LuaReconnectClients());
+            }
+        }
+        _checksumManager.Initialize();
+        _sessionManager.NextSession();
     }
 }

@@ -2,6 +2,7 @@ using AssettoServer.Server;
 using AssettoServer.Server.Configuration;
 using AssettoServer.Shared.Services;
 using Microsoft.Extensions.Hosting;
+using Polly;
 using Serilog;
 
 namespace nvrlift.AssettoServer.Track;
@@ -17,6 +18,7 @@ public class TrackManager : CriticalBackgroundService
         SessionManager timeSource,
         IHostApplicationLifetime applicationLifetime) : base(applicationLifetime)
     {
+        
         _trackImplementation = trackImplementation;
         _configuration = configuration;
         _timeSource = timeSource;
