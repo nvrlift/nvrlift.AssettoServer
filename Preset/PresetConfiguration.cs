@@ -58,15 +58,15 @@ public class PresetConfiguration
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public struct RandomTrackPresetEntry
+public class RandomTrackPresetEntry
 {
-    public bool Enabled { get; set; }
-    public float Weight { get; set; }
+    public bool Enabled { get; set; } = false;
+    public float Weight { get; set; } = 1.0f;
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public struct VotingTrackPresetEntry
+public class VotingTrackPresetEntry
 {
-    public bool Enabled { get; set; }
+    public bool Enabled { get; set; } = false;
 }
 

@@ -1,19 +1,16 @@
-﻿using AssettoServer.Server;
-using AssettoServer.Server.Configuration;
-using IniParser;
-using IniParser.Model;
-using nvrlift.AssettoServer.Restart;
-using Polly;
-using Serilog;
-using VotingTrackPlugin;
+﻿using AssettoServer.Server.Configuration;
 
 namespace nvrlift.AssettoServer.Preset;
 
 public class PresetConfigurationManager
 {
     public PresetConfiguration CurrentConfiguration { get; }
-    public List<PresetConfiguration> Configurations { get; }
-    public List<PresetType> PresetTypes { get; }
+    public List<PresetConfiguration> AllConfigurations { get; }
+    public List<PresetConfiguration> RandomConfigurations { get; }
+    public List<PresetConfiguration> VotingConfigurations { get; }
+    public List<PresetType> AllPresetTypes { get; }
+    public List<PresetType> RandomPresetTypes { get; }
+    public List<PresetType> VotingPresetTypes { get; }
 
     public PresetConfigurationManager(ACServerConfiguration acServerConfiguration)
     {
@@ -26,14 +23,18 @@ public class PresetConfigurationManager
             configs.Add(PresetConfiguration.FromFile(Path.Join(dir, "preset_cfg.yml")));
         }
 
-        Configurations = configs;
+        AllConfigurations = configs;
+        RandomConfigurations = configs.Where(c => c.RandomTrack!.Enabled).ToList();
+        VotingConfigurations = configs.Where(c => c.VotingTrack!.Enabled).ToList();
 
         var types = new List<PresetType>();
-        foreach (var conf in Configurations)
+        foreach (var conf in AllConfigurations)
         {
             types.Add(conf.ToPresetType());
         }
 
-        PresetTypes = types;
+        AllPresetTypes = types;
+        RandomPresetTypes = configs.Where(c => c.RandomTrack!.Enabled).Select(x => x.ToPresetType()).ToList();
+        VotingPresetTypes = configs.Where(c => c.VotingTrack!.Enabled).Select(x => x.ToPresetType()).ToList();
     }
 }
