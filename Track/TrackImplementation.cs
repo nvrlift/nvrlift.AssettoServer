@@ -64,7 +64,7 @@ public class TrackImplementation
 
         
         // Next Session
-        Log.Information("Reconnecting all clients track change.");
+        Log.Information("Kicking all clients for track change.");
         foreach (var client in _entryCarManager.EntryCars.Select(c => c.Client))
         {
             if (client == null) continue;
