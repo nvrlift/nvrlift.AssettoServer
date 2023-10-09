@@ -14,7 +14,7 @@ public class PresetConfigurationManager
 
     public PresetConfigurationManager(ACServerConfiguration acServerConfiguration)
     {
-        CurrentConfiguration = PresetConfiguration.FromFile(acServerConfiguration.BaseFolder);
+        CurrentConfiguration = PresetConfiguration.FromFile(Path.Join(acServerConfiguration.BaseFolder, "preset_cfg.yml"));
 
         var configs = new List<PresetConfiguration>();
         var directories = Directory.GetDirectories("presets");

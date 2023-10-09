@@ -18,7 +18,7 @@ public class RestartImplementation
         _entryCarManager = entryCarManager;
     }
 
-    public void InitiateRestart(string preset, RestartType type)
+    public void InitiateRestart(string presetPath, RestartType type)
     {
         //Kick clients
         Log.Information("Kicking all clients for restart.");
@@ -30,6 +30,8 @@ public class RestartImplementation
                 _entryCarManager.KickAsync(client, "Server restarting").GetAwaiter().GetResult();
             }
         }
+
+        var preset = new DirectoryInfo(presetPath).Name;
 
         switch (type)
         {
