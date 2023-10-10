@@ -1,37 +1,34 @@
-using AssettoServer.Server;
-using AssettoServer.Server.Configuration;
 using AssettoServer.Shared.Services;
 using Microsoft.Extensions.Hosting;
-using Polly;
 using Serilog;
+using VotingTrackPlugin;
 
 namespace nvrlift.AssettoServer.Track;
 
 public class TrackManager : CriticalBackgroundService
 {
-    private readonly ACServerConfiguration _configuration;
-    private readonly SessionManager _timeSource;
     private readonly TrackImplementation _trackImplementation;
 
     public TrackManager(TrackImplementation trackImplementation,
-        ACServerConfiguration configuration,
-        SessionManager timeSource,
         IHostApplicationLifetime applicationLifetime) : base(applicationLifetime)
     {
-        
         _trackImplementation = trackImplementation;
-        _configuration = configuration;
-        _timeSource = timeSource;
+    }
+    private RestartType _restartType = RestartType.Disabled;
+
+    public void SetRestartType(RestartType restartType)
+    {
+        _restartType = restartType;
     }
 
     public TrackData CurrentTrack { get; private set; } = null!;
 
-    public void SetTrack(TrackData track)
+    public void SetTrack(TrackData track, RestartType restartType)
     {
         CurrentTrack = track;
 
         if (!CurrentTrack.IsInit)
-            UpdateTrack();
+            UpdateTrack(restartType);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -40,7 +37,8 @@ public class TrackManager : CriticalBackgroundService
         {
             try
             {
-                UpdateTrack();
+                if(_restartType != RestartType.Disabled)
+                    UpdateTrack(_restartType);
             }
             catch (Exception ex)
             {
@@ -53,12 +51,12 @@ public class TrackManager : CriticalBackgroundService
         }
     }
 
-    private void UpdateTrack()
+    private void UpdateTrack(RestartType restartType)
     {
         if (CurrentTrack.UpcomingType != null || !CurrentTrack.Type!.Equals(CurrentTrack.UpcomingType!))
         {
             Log.Information($"Track change to '{CurrentTrack.UpcomingType!.Name}' initiated");
-            _trackImplementation.ChangeTrack(CurrentTrack);
+            _trackImplementation.ChangeTrack(CurrentTrack, restartType);
 
             CurrentTrack.Type = CurrentTrack.UpcomingType;
             CurrentTrack.UpcomingType = null;
