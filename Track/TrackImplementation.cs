@@ -1,11 +1,7 @@
 ﻿using AssettoServer.Server;
 using AssettoServer.Server.Configuration;
-using IniParser;
-using IniParser.Model;
 using nvrlift.AssettoServer.Restart;
-using Polly;
 using Serilog;
-using VotingTrackPlugin;
 
 namespace nvrlift.AssettoServer.Track;
 

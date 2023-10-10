@@ -1,7 +1,6 @@
 using AssettoServer.Shared.Services;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using VotingTrackPlugin;
 
 namespace nvrlift.AssettoServer.Track;
 
